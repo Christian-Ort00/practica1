@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/plantilla :: head}">
+    <title>Fragmentos Árbol</title>
+</head>
+<body>
+
+<!-- Botón para abrir modal -->
+<section th:fragment="botonAgregar" class="py-4 mb-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarArbol">
+                    <i class="fas fa-plus"></i> Agregar Árbol
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal para agregar árbol -->
+<section th:fragment="agregarArbol">
+    <div class="modal fade" id="agregarArbol" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Agregar Árbol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/arbol/guardar}" th:object="${arbol}" method="post" class="was-validated">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" name="nombre" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="edad">Edad</label>
+                            <input type="number" class="form-control" name="edad" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="imagen">URL de Imagen</label>
+                            <input type="text" class="form-control" name="imagen" required />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="submit">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tabla de árboles -->
+<section th:fragment="listadoArboles" class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h4>Listado de Árboles</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <thead class="table-success">
+                    <tr>
+                        <th>#</th>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="arbol, i : ${arboles}">
+                        <td th:text="${i.count}">1</td>
+                        <td><img th:src="${arbol.imagen}" alt="Imagen" width="80" height="80"></td>
+                        <td th:text="${arbol.nombre}">Nombre</td>
+                        <td th:text="${arbol.edad}">Edad</td>
+                        <td>
+                            <a th:href="@{/arbol/eliminar/}+${arbol.id}" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                            <a th:href="@{/arbol/modificar/}+${arbol.id}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
